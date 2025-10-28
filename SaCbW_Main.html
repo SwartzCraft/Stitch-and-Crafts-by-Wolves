@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 
+        META TAGS SECTION
+        These tags provide important information about the website to browsers and search engines
+    -->
+    <meta charset="UTF-8"> <!-- Tells browser to use UTF-8 character encoding (supports all languages and special characters) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes website responsive on mobile devices -->
+    
+    <!-- SECURITY META TAGS - These help protect the website from various attacks -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff"> <!-- Prevents browser from guessing file types, protects against malicious file uploads -->
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN"> <!-- Prevents website from being embedded in iframes on other sites (protects against clickjacking attacks) -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block"> <!-- Enables built-in browser protection against cross-site scripting (XSS) attacks -->
+    <meta name="referrer" content="strict-origin-when-cross-origin"> <!-- Controls what information is sent when users click links to other sites -->
+    
+    <!-- Content Security Policy - This is one of the most important security features -->
+    <!-- It tells the browser what resources are allowed to load and from where -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        script-src 'self' 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline'; 
+        img-src 'self' https: data:; 
+        font-src 'self'; 
+        connect-src 'self'; 
+        frame-ancestors 'none';
+    ">
+    <!-- Explanation of CSP directives:
+         - default-src 'self': Only load resources from our own domain by default
+         - script-src 'self' 'unsafe-inline': Allow scripts from our domain and inline scripts (needed for our JavaScript)
+         - style-src 'self' 'unsafe-inline': Allow styles from our domain and inline styles (needed for our CSS)
+         - img-src 'self' https: data:: Allow images from our domain, any HTTPS source, and data URIs
+         - font-src 'self': Only load fonts from our own domain
+         - connect-src 'self': Only allow AJAX/fetch requests to our own domain
+         - frame-ancestors 'none': Don't allow this site to be embedded in any frames (extra clickjacking protection)
+    -->
+    
+    <!-- Permissions Policy - Controls what browser features the site can use -->
+    <meta http-equiv="Permissions-Policy" content="
+        geolocation=(), 
+        microphone=(), 
+        camera=(), 
+        payment=(), 
+        usb=(), 
+        magnetometer=(), 
+        gyroscope=(), 
+        accelerometer=()
+    ">
+    <!-- This disables potentially dangerous browser features we don't need -->
+    
+    <title>Stitches and Crafts by Wolves</title> <!-- The text that appears in the browser tab -->
+    
+    <style>
+        /* 
+            CSS STYLES SECTION
+            This controls how everything on the website looks
+            CSS uses selectors (like "body" or ".hero") to target HTML elements
+            and applies styling rules to them
+        */
+        
+        /* RESET STYLES - Remove default browser spacing */
+        * {
+            margin: 0;           /* Remove default margins from all elements */
+            padding: 0;          /* Remove default padding from all elements */
+            box-sizing: border-box;  /* Makes width/height calculations include padding and border */
+        }
+
+        /* 
+            CSS VARIABLES (Custom Properties)
+            These are like variables in programming - store values that can be reused
+            They make it easy to change colors throughout the entire site
+        */
+        :root {
+            /* Pastel color palette - professional and modern */
+            --pastel-blue: #a8d8ea;      /* Soft blue color */
+            --pastel-pink: #ffb3ba;      /* Soft pink color */
+            --pastel-lavender: #d4b5e8;  /* Soft purple/lavender color */
+            --pastel-mint: #b4e7ce;      /* Soft mint green color */
+            --pastel-peach: #ffd9c0;     /* Soft peach/orange color */
+            --dark-text: #2c3e50;        /* Dark color for text (good contrast) */
+            --light-bg: #f8f9fa;         /* Light background color */
+            --white: #ffffff;            /* Pure white */
+        }
+
+        /* BODY STYLES - Applies to the entire page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Professional, readable font */
+            color: var(--dark-text);     /* Use our dark text color variable */
+            line-height: 1.6;            /* Space between lines of text (improves readability) */
+        }
+
+        /* HEADER STYLES - The top navigation bar */
+        header {
+            background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-lavender) 100%);  /* Gradient background from blue to lavender */
+            padding: 1rem 0;             /* Add space inside the header (top and bottom) */
+            position: sticky;            /* Makes header stick to top when scrolling */
+            top: 0;                      /* Stick to the very top of the page */
+            z-index: 1000;               /* Makes sure header appears above other content */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);  /* Subtle shadow under the header */
+        }
+
+        /* NAVIGATION CONTAINER - Centers and arranges nav items */
+        nav {
+            max-width: 1200px;           /* Maximum width of navigation (prevents it from getting too wide on large screens) */
+            margin: 0 auto;              /* Center the navigation horizontally */
+            display: flex;               /* Use flexbox layout (makes items arrange in a row) */
+            justify-content: space-between;  /* Space items apart (logo on left, links on right) */
+            align-items: center;         /* Vertically center items */
+            padding: 0 2rem;             /* Add space on left and right sides */
+        }
+
+        /* LOGO STYLES */
+        .logo {
+            font-size: 1.5rem;           /* Make logo text larger */
+            font-weight: bold;           /* Make logo text bold */
+            color: var(--white);         /* White text color */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);  /* Subtle shadow behind text for depth */
+        }
+
+        /* NAVIGATION LINKS CONTAINER */
+        .nav-links {
+            display: flex;               /* Arrange links in a row */
+            gap: 1rem;                   /* Space between each link */
+            list-style: none;            /* Remove bullet points from list */
+        }
+
+        /* INDIVIDUAL NAVIGATION LINK STYLES */
+        .nav-links a {
+            color: var(--white);         /* White text */
+            text-decoration: none;       /* Remove underline from links */
+            padding: 0.5rem 1.5rem;      /* Space inside each button */
+            border-radius: 25px;         /* Rounded corners */
+            transition: all 0.3s ease;   /* Smooth animation when hovering (0.3 seconds) */
+            font-weight: 500;            /* Slightly bold text */
+            background: rgba(255,255,255,0.2);  /* Semi-transparent white background */
+        }
+
+        /* NAVIGATION LINK HOVER AND ACTIVE STATES */
+        /* This styling applies when you hover over a link or when a link is active (current page) */
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--white);    /* Solid white background */
+            color: var(--dark-text);     /* Dark text color */
+            transform: translateY(-2px); /* Move up slightly (creates a "lift" effect) */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);  /* Add shadow underneath */
+        }
+
+        /* MOBILE MENU BUTTON - Only visible on small screens */
+        .mobile-menu-btn {
+            display: none;               /* Hidden by default (only shows on mobile) */
+            background: var(--white);    /* White background */
+            border: none;                /* Remove default button border */
+            padding: 0.5rem 1rem;        /* Space inside button */
+            border-radius: 5px;          /* Slightly rounded corners */
+            cursor: pointer;             /* Show pointer cursor when hovering */
+            font-size: 1.2rem;           /* Larger text (the hamburger icon) */
+        }
+
+        /* SECTION STYLES - Main content areas of the page */
+        section {
+            min-height: calc(100vh - 80px);  /* Take up at least full screen height minus header */
+            padding: 4rem 2rem;          /* Space around content */
+            display: none;               /* Hide all sections by default */
+        }
+
+        /* ACTIVE SECTION - The currently visible page */
+        section.active {
+            display: block;              /* Show the active section */
+        }
+
+        /* CONTAINER - Limits width and centers content */
+        .container {
+            max-width: 1200px;           /* Maximum width of content */
+            margin: 0 auto;              /* Center content horizontally */
+        }
+
+        /* HERO SECTION - Large banner at top of homepage */
+        .hero {
+            text-align: center;          /* Center all text */
+            padding: 6rem 2rem;          /* Large spacing around content */
+            background: linear-gradient(135deg, var(--pastel-mint) 0%, var(--pastel-peach) 100%);  /* Gradient background */
+            border-radius: 20px;         /* Rounded corners */
+            margin-bottom: 3rem;         /* Space below hero */
+        }
+
+        /* HERO HEADING */
+        .hero h1 {
+            font-size: 3rem;             /* Very large text */
+            margin-bottom: 1rem;         /* Space below heading */
+            color: var(--dark-text);     /* Dark text color */
+        }
+
+        /* HERO PARAGRAPH */
+        .hero p {
+            font-size: 1.3rem;           /* Larger than normal text */
+            margin-bottom: 2rem;         /* Space below paragraph */
+            color: var(--dark-text);     /* Dark text color */
+        }
+
+        /* CALL-TO-ACTION BUTTON */
+        .cta-button {
+            display: inline-block;       /* Makes link behave like a button */
+            padding: 1rem 2.5rem;        /* Space inside button */
+            background: var(--white);    /* White background */
+            color: var(--dark-text);     /* Dark text */
+            text-decoration: none;       /* Remove underline */
+            border-radius: 30px;         /* Very rounded corners (pill shape) */
+            font-weight: bold;           /* Bold text */
+            transition: all 0.3s ease;   /* Smooth animation */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow underneath */
+        }
+
+        /* CALL-TO-ACTION BUTTON HOVER STATE */
+        .cta-button:hover {
+            transform: translateY(-3px);  /* Move up when hovering */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);  /* Larger shadow when hovering */
+        }
+
+        /* SERVICES GRID - Layout for service cards on homepage */
+        .services-grid {
+            display: grid;                /* Use CSS Grid layout */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  /* Create columns that are at least 250px wide, auto-fit as many as possible */
+            gap: 2rem;                    /* Space between cards */
+            margin-top: 3rem;             /* Space above grid */
+        }
+
+        /* SERVICE CARD - Individual service display boxes */
+        .service-card {
+            background: var(--white);     /* White background */
+            padding: 2rem;                /* Space inside card */
+            border-radius: 15px;          /* Rounded corners */
+            text-align: center;           /* Center text */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow around card */
+            transition: all 0.3s ease;    /* Smooth animation */
+            border-top: 4px solid var(--pastel-blue);  /* Colored bar at top of card */
+        }
+
+        /* DIFFERENT COLORED TOPS FOR EACH SERVICE CARD */
+        /* :nth-child(2) means "the second card", :nth-child(3) means "the third card", etc. */
+        .service-card:nth-child(2) {
+            border-top-color: var(--pastel-pink);    /* Pink top border for second card */
+        }
+
+        .service-card:nth-child(3) {
+            border-top-color: var(--pastel-lavender); /* Lavender top border for third card */
+        }
+
+        .service-card:nth-child(4) {
+            border-top-color: var(--pastel-mint);    /* Mint top border for fourth card */
+        }
+
+        /* SERVICE CARD HOVER STATE */
+        .service-card:hover {
+            transform: translateY(-5px);   /* Move up when hovering */
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);  /* Larger shadow when hovering */
+        }
+
+        /* SERVICE ICON - Emoji icons in service cards */
+        .service-icon {
+            font-size: 3rem;              /* Very large emoji */
+            margin-bottom: 1rem;          /* Space below icon */
+        }
+
+        /* ABOUT PAGE CONTENT SECTION */
+        .about-content {
+            background: var(--white);     /* White background */
+            padding: 3rem;                /* Space inside box */
+            border-radius: 15px;          /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow around box */
+            margin-bottom: 3rem;          /* Space below section */
+        }
+
+        /* TEAM MEMBER GRID - Layout for team member cards */
+        .team-grid {
+            display: grid;                /* Use CSS Grid layout */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  /* Create columns at least 280px wide */
+            gap: 2rem;                    /* Space between cards */
+            margin-top: 2rem;             /* Space above grid */
+        }
+
+        /* TEAM MEMBER CARD */
+        .team-member {
+            background: var(--white);     /* White background */
+            padding: 2rem;                /* Space inside card */
+            border-radius: 15px;          /* Rounded corners */
+            text-align: center;           /* Center text */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow around card */
+        }
+
+        /* TEAM MEMBER PHOTO */
+        .team-member img {
+            width: 150px;                 /* Set width */
+            height: 150px;                /* Set height (same as width = perfect circle) */
+            border-radius: 50%;           /* Make image circular (50% rounds all corners completely) */
+            object-fit: cover;            /* Crop image to fit without distortion */
+            margin-bottom: 1rem;          /* Space below image */
+            border: 4px solid var(--pastel-lavender);  /* Colored border around image */
+        }
+
+        /* GALLERY FILTER BUTTONS */
+        .gallery-filters {
+            display: flex;                /* Arrange buttons in a row */
+            justify-content: center;      /* Center buttons horizontally */
+            gap: 1rem;                    /* Space between buttons */
+            margin-bottom: 3rem;          /* Space below buttons */
+            flex-wrap: wrap;              /* Allow buttons to wrap to next line on small screens */
+        }
+
+        /* INDIVIDUAL FILTER BUTTON */
+        .filter-btn {
+            padding: 0.75rem 1.5rem;      /* Space inside button */
+            border: none;                 /* Remove default border */
+            border-radius: 25px;          /* Rounded corners */
+            background: var(--white);     /* White background */
+            color: var(--dark-text);      /* Dark text */
+            cursor: pointer;              /* Show pointer cursor */
+            transition: all 0.3s ease;    /* Smooth animation */
+            font-weight: 500;             /* Slightly bold */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);  /* Shadow around button */
+        }
+
+        /* FILTER BUTTON HOVER AND ACTIVE STATES */
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--pastel-pink);  /* Pink background when active or hovering */
+            color: var(--white);          /* White text */
+            transform: translateY(-2px);  /* Move up slightly */
+        }
+
+        /* GALLERY GRID - Layout for gallery items */
+        .gallery-grid {
+            display: grid;                /* Use CSS Grid layout */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));  /* Create columns at least 280px wide */
+            gap: 2rem;                    /* Space between items */
+        }
+
+        /* GALLERY ITEM CARD */
+        .gallery-item {
+            background: var(--white);     /* White background */
+            border-radius: 15px;          /* Rounded corners */
+            overflow: hidden;             /* Hide anything that goes outside the rounded corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow around card */
+            transition: all 0.3s ease;    /* Smooth animation */
+            cursor: pointer;              /* Show pointer cursor */
+        }
+
+        /* GALLERY ITEM HOVER STATE */
+        .gallery-item:hover {
+            transform: translateY(-5px);   /* Move up when hovering */
+            box-shadow: 0 6px 25px rgba(0,0,0,0.2);  /* Larger shadow when hovering */
+        }
+
+        /* GALLERY ITEM IMAGE */
+        .gallery-item img {
+            width: 100%;                  /* Take full width of container */
+            height: 250px;                /* Fixed height */
+            object-fit: cover;            /* Crop image to fit without distortion */
+        }
+
+        /* GALLERY ITEM TEXT SECTION */
+        .gallery-item-info {
+            padding: 1.5rem;              /* Space inside text area */
+        }
+
+        /* GALLERY ITEM HEADING */
+        .gallery-item-info h3 {
+            margin-bottom: 0.5rem;        /* Space below heading */
+            color: var(--dark-text);      /* Dark text */
+        }
+
+        /* GALLERY CATEGORY TAG */
+        .gallery-category {
+            display: inline-block;        /* Make tag inline but allow padding */
+            padding: 0.3rem 0.8rem;       /* Space inside tag */
+            background: var(--pastel-blue);  /* Blue background */
+            color: var(--white);          /* White text */
+            border-radius: 15px;          /* Rounded corners */
+            font-size: 0.85rem;           /* Slightly smaller text */
+            margin-top: 0.5rem;           /* Space above tag */
+        }
+
+        /* CONTACT PAGE LAYOUT */
+        .contact-container {
+            display: grid;                /* Use CSS Grid layout */
+            grid-template-columns: 1fr 1fr;  /* Two equal columns */
+            gap: 3rem;                    /* Space between columns */
+            margin-top: 2rem;             /* Space above container */
+        }
+
+        /* CONTACT INFORMATION SECTION */
+        .contact-info {
+            background: var(--white);     /* White background */
+            padding: 3rem;                /* Space inside box */
+            border-radius: 15px;          /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);  /* Shadow around box */
+        }
+
+        /* CONTACT INFO HEADING */
+        .contact-info h3 {
+            margin-bottom: 2rem;          /* Space below heading */
+            color: var(--dark-text);      /* Dark text */
+            font-size: 1.8rem;            /* Large text */
+        }
+
+        /* INDIVIDUAL CONTACT ITEM */
+        .contact-item {
+            margin-bottom: 2rem;          /* Space below each item */
+            padding: 1.5rem;              /* Space inside box */
+            background: var(--light-bg);  /* Light background */
+            border-radius: 10px;          /* Rounded corners */
+            border-left: 4px solid var(--pastel-blue);  /* Colored bar on left side */
+        }
+
+        /* CONTACT ITEM HEADING */
+        .contact-item h4 {
+            margin-bottom: 0.5rem;        /* Space below heading */
+            color: var(--dark-text);      /* Dark text */
+        }
+
+        /* CONTACT ITEM LINKS */
+        .contact-item a {
+            color: var(--dark-text);      /* Dark text */
+            text-decoration: none;        /* Remove underline */
+            font-weight: 500;             /* Slightly bold */
+        }
+
+        /* CONTACT ITEM LINK HOVER STATE */
+        .contact-item a:hover {
+            color: var(--pastel-lavender);  /* Change color when hovering */
+        }
+
+        /* ORDER FORM DOWNLOAD SECTION */
+        .order-form-section {
+            background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-lavender) 100%);  /* Gradient background */
+            padding: 3rem;                /* Space inside box */
+            border-radius: 15px;          /* Rounded corners */
+            text-align: center;           /* Center text */
+            color: var(--white);          /* White text */
+        }
+
+        /* ORDER FORM SECTION HEADING */
+        .order-form-section h3 {
+            margin-bottom: 1rem;          /* Space below heading */
+            font-size: 1.8rem;            /* Large text */
+        }
+
+        /* DOWNLOAD BUTTON */
+        .download-btn {
+            display: inline-block;        /* Make link behave like button */
+            margin-top: 1.5rem;           /* Space above button */
+            padding: 1rem 2rem;           /* Space inside button */
+            background: var(--white);     /* White background */
+            color: var(--dark-text);      /* Dark text */
+            text-decoration: none;        /* Remove underline */
+            border-radius: 30px;          /* Very rounded corners */
+            font-weight: bold;            /* Bold text */
+            transition: all 0.3s ease;    /* Smooth animation */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);  /* Shadow underneath */
+        }
+
+        /* DOWNLOAD BUTTON HOVER STATE */
+        .download-btn:hover {
+            transform: translateY(-3px);   /* Move up when hovering */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);  /* Larger shadow when hovering */
+        }
+
+        /* FOOTER STYLES */
+        footer {
+            background: var(--dark-text);  /* Dark background */
+            color: var(--white);          /* White text */
+            text-align: center;           /* Center text */
+            padding: 2rem;                /* Space inside footer */
+            margin-top: 4rem;             /* Space above footer */
+        }
+
+        /* ALL H2 HEADINGS */
+        h2 {
+            font-size: 2.5rem;            /* Large text */
+            margin-bottom: 2rem;          /* Space below heading */
+            text-align: center;           /* Center text */
+            color: var(--dark-text);      /* Dark text */
+        }
+
+        /* 
+            RESPONSIVE DESIGN - MOBILE STYLES
+            @media queries allow different styles for different screen sizes
+            max-width: 768px means "if screen is 768 pixels wide or smaller"
+        */
+        @media (max-width: 768px) {
+            /* Show mobile menu button on small screens */
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Hide navigation links by default on mobile */
+            .nav-links {
+                display: none;            /* Hidden by default */
+                position: absolute;       /* Position relative to header */
+                top: 100%;                /* Position below header */
+                left: 0;                  /* Align to left edge */
+                right: 0;                 /* Stretch to right edge */
+                background: linear-gradient(135deg, var(--pastel-blue) 0%, var(--pastel-lavender) 100%);  /* Same gradient as header */
+                flex-direction: column;   /* Stack links vertically instead of horizontally */
+                padding: 1rem;            /* Space inside menu */
+            }
+
+            /* Show navigation links when active class is added */
+            .nav-links.active {
+                display: flex;            /* Show the menu */
+            }
+
+            /* Make hero heading smaller on mobile */
+            .hero h1 {
+                font-size: 2rem;          /* Smaller than desktop size */
+            }
+
+            /* Make contact container single column on mobile */
+            .contact-container {
+                grid-template-columns: 1fr;  /* One column instead of two */
+            }
+
+            /* Make all h2 headings smaller on mobile */
+            h2 {
+                font-size: 2rem;          /* Smaller than desktop size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        HEADER SECTION
+        This is the navigation bar at the top of the page
+        It contains the logo and navigation links
+    -->
+    <header>
+        <nav>
+            <!-- Business name/logo -->
+            <div class="logo">Stitches and Crafts by Wolves</div>
+            
+            <!-- Mobile menu button (hamburger icon) - only visible on mobile devices -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            
+            <!-- Navigation links -->
+            <ul class="nav-links" id="navLinks">
+                <!-- Each link has data-section attribute that matches the ID of the section it should show -->
+                <li><a href="#" class="nav-link active" data-section="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-section="about">About</a></li>
+                <li><a href="#" class="nav-link" data-section="gallery">Gallery</a></li>
+                <li><a href="#" class="nav-link" data-section="contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 
+        HOME PAGE SECTION
+        This is the first page visitors see
+        The "active" class makes it visible by default
+    -->
+    <section id="home" class="active">
+        <!-- Hero section - large banner at top of homepage -->
+        <div class="hero">
+            <h1>Welcome to Stitches and Crafts by Wolves</h1>
+            <p>Custom Seamstress Services, Unique Stickers, Beautiful Bead Art & More</p>
+            <!-- Button that takes users to contact page when clicked -->
+            <a href="#" class="cta-button" onclick="showSection('contact')">Get in Touch</a>
+        </div>
+        
+        <!-- Container limits width and centers content -->
+        <div class="container">
+            <h2>Our Services</h2>
+            
+            <!-- Grid of service cards -->
+            <div class="services-grid">
+                <!-- Service Card 1: Seamstress Services -->
+                <div class="service-card">
+                    <div class="service-icon">🪡</div> <!-- Emoji icon -->
+                    <h3>Seamstress Services</h3>
+                    <p>Professional alterations, custom garments, and expert tailoring for all your sewing needs.</p>
+                </div>
+                
+                <!-- Service Card 2: Custom Stickers -->
+                <div class="service-card">
+                    <div class="service-icon">✨</div>
+                    <h3>Custom Stickers</h3>
+                    <p>Unique, high-quality stickers perfect for personalizing your belongings or gifting.</p>
+                </div>
+                
+                <!-- Service Card 3: Framed Bead Art -->
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3>Framed Bead Art</h3>
+                    <p>Handcrafted bead posters and artwork, beautifully framed and ready to display.</p>
+                </div>
+                
+                <!-- Service Card 4: Custom Projects -->
+                <div class="service-card">
+                    <div class="service-icon">🎁</div>
+                    <h3>Custom Projects</h3>
+                    <p>Special requests and unique creations tailored to your vision and needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 
+        ABOUT PAGE SECTION
+        Information about the business and team
+    -->
+    <section id="about">
+        <div class="container">
+            <h2>About Us</h2>
+            
+            <!-- Business story and information -->
+            <div class="about-content">
+                <h3>Our Story</h3>
+                <!-- 
+                    NOTE: Replace this text with the actual business story
+                    Keep paragraphs concise and engaging
+                -->
+                <p>Stitches and Crafts by Wolves was founded with a passion for creating beautiful, handcrafted items and providing exceptional seamstress services. We believe that every piece should tell a story and bring joy to its owner.</p>
+                <p>From custom alterations to unique bead art, we pour our creativity and expertise into every project. Our commitment to quality craftsmanship and customer satisfaction sets us apart.</p>
+            </div>
+
+            <h2>Meet the Team</h2>
+            
+            <!-- Grid of team member cards -->
+            <div class="team-grid">
+                <!-- Team Member 1 -->
+                <!-- 
+                    NOTE: To add a team member photo:
+                    1. Upload the photo to the same folder as this HTML file
+                    2. Replace "https://via.placeholder.com/150" with the filename (e.g., "owner-photo.jpg")
+                    3. Make sure the image is square (same width and height) for best results
+                -->
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/150" alt="Team Member">
+                    <h3>Owner Name</h3>
+                    <p><strong>Founder & Lead Artist</strong></p>
+                    <p>Brief bio about the owner, their experience, passion, and what they bring to the business.</p>
+                </div>
+                
+                <!-- Team Member 2 -->
+                <!-- 
+                   NOTE: To add more team members:
+                    1. Copy this entire team-member div
+                    2. Paste it below this one
+                    3. Update the name, role, and bio
+                    4. Change the image source
+                -->
+                <div class="team-member">
+                    <img src="https://via.placeholder.com/150" alt="Team Member">
+                    <h3>Team Member Name</h3>
+                    <p><strong>Role/Position</strong></p>
+                    <p>Brief bio about the team member, their skills, and contributions to the business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 
+        GALLERY PAGE SECTION
+        Displays portfolio of completed work
+    -->
+    <section id="gallery">
+        <div class="container">
+            <h2>Our Work</h2>
+            
+            <!-- Filter buttons to sort gallery by category -->
+            <div class="gallery-filters">
+                <!-- 
+                    Each button has a data-filter attribute that matches the data-category on gallery items
+                    Clicking a
