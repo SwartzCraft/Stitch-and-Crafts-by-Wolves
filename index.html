@@ -655,18 +655,166 @@
         </div>
     </section>
 
-    <!-- 
+        <!-- 
         GALLERY PAGE SECTION
         Displays portfolio of completed work
     -->
-    <section id="gallery">
+     <section id="gallery">
         <div class="container">
             <h2>Our Work</h2>
-            
-            <!-- Filter buttons to sort gallery by category -->
+            <!--
+                Gallery page filters to sort by catagory
+                Each button has a data-filter attribute that matches the data-category on gallery items
+            -->
             <div class="gallery-filters">
-                <!-- 
-                    Each button has a data-filter attribute that matches the data-category on gallery items
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="sewing">Sewing</button>
+                <button class="filter-btn" data-filter="stickers">Stickers</button>
+                <button class="filter-btn" data-filter="bead-art">Bead Art</button>
+                <button class="filter-btn" data-filter="other">Other</button>
+            </div>
 
-                    Clicking a
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item" data-category="sewing">
+                    <img src="https://via.placeholder.com/300x250" alt="Sewing Project">
+                    <div class="gallery-item-info">
+                        <h3>Custom Dress Alteration</h3>
+                        <p>Professional fitting and tailoring</p>
+                        <span class="gallery-category">Sewing</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="stickers">
+                    <img src="https://via.placeholder.com/300x250" alt="Sticker Design">
+                    <div class="gallery-item-info">
+                        <h3>Custom Sticker Set</h3>
+                        <p>Unique designs for any occasion</p>
+                        <span class="gallery-category">Stickers</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="bead-art">
+                    <img src="https://via.placeholder.com/300x250" alt="Bead Art">
+                    <div class="gallery-item-info">
+                        <h3>Framed Bead Poster</h3>
+                        <p>Intricate handcrafted artwork</p>
+                        <span class="gallery-category">Bead Art</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="sewing">
+                    <img src="https://via.placeholder.com/300x250" alt="Sewing Project">
+                    <div class="gallery-item-info">
+                        <h3>Hem and Repair Work</h3>
+                        <p>Quality alterations and fixes</p>
+                        <span class="gallery-category">Sewing</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="bead-art">
+                    <img src="https://via.placeholder.com/300x250" alt="Bead Art">
+                    <div class="gallery-item-info">
+                        <h3>Custom Bead Design</h3>
+                        <p>Personalized artwork</p>
+                        <span class="gallery-category">Bead Art</span>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="other">
+                    <img src="https://via.placeholder.com/300x250" alt="Other Project">
+                    <div class="gallery-item-info">
+                        <h3>Special Project</h3>
+                        <p>Custom creation</p>
+                        <span class="gallery-category">Other</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 
+        Contact PAGE SECTION
+        Displays Contact information (email, phone), Business Hours, and hosts order form download
+    -->
+    <section id="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <h4>📧 Email Us</h4>
+                        <a href="mailto:contact@stitchesandcrafts.com">contact@stitchesandcrafts.com</a>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">Click to open your email client</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>📞 Phone</h4>
+                        <a href="tel:+1234567890">(123) 456-7890</a>
+                    </div>
+                    <div class="contact-item">
+                        <h4>🕐 Business Hours</h4>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM<br>
+                        Saturday: 10:00 AM - 4:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
 
+                <div class="order-form-section">
+                    <h3>Request an Appointment</h3>
+                    <p>Download our order form, fill it out with your project details, and email it to us to get started!</p>
+                    <p style="margin-top: 1rem;">The form includes information about our services, pricing, and what we need to know about your project.</p>
+                    <a href="#" class="download-btn" onclick="alert('PDF order form will be available here. Replace this link with your actual PDF file.'); return false;">📄 Download Order Form</a>
+                    <p style="margin-top: 1.5rem; font-size: 0.9rem;">Once completed, attach the form to an email and send it to the address above.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Stitches and Crafts by Wolves. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            document.getElementById('navLinks').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+            });
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                const items = document.querySelectorAll('.gallery-item');
+                
+                items.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
